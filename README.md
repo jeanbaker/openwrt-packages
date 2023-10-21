@@ -1,1 +1,1 @@
-# openwrt-packages
+# openwrt-package-update
