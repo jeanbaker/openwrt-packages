@@ -248,7 +248,7 @@ function gen_outbound(flag, node, tag, proxy_table)
 				--max_version = "1.3",
 				fragment = fragment,
 				record_fragment = record_fragment,
-				certificate = (node.tls_certificate == "1" and node.tls_certificate_pem ~= "") and api.split(node.tls_certificate_pem, "\n") or nil,
+				certificate = (node.tls_certificate == "1" and node.tls_certificate_pem ~= "") and api.split(node.tls_certificate_pem:gsub("\\n", "\n"), "\n") or nil,
 				cipher_suites = (node.cipherSuites and node.cipherSuites ~= "") and api.split(node.cipherSuites, ":") or nil,
 				ech = (node.ech == "1") and (function()
 					local function get_ech_domain(s) --兼容xray "域名+DNS" 格式ech
@@ -273,7 +273,7 @@ function gen_outbound(flag, node, tag, proxy_table)
 						ech.query_server_name = qname
 						ech_domain[qname] = true
 					elseif config then
-						ech.config = { config }
+						ech.config = api.split(config:gsub("\\n", "\n"), "\n")
 					elseif node.tls_serverName and node.tls_serverName ~= "" then
 						ech_domain[node.tls_serverName] = true
 					end
@@ -347,9 +347,20 @@ function gen_outbound(flag, node, tag, proxy_table)
 					Host = node.ws_host,
 					["User-Agent"] = node.user_agent
 				} or nil,
-				max_early_data = tonumber(node.ws_maxEarlyData) or nil,
-				early_data_header_name = (node.ws_earlyDataHeaderName) and node.ws_earlyDataHeaderName or nil --要与 Xray-core 兼容，请将其设置为 Sec-WebSocket-Protocol。它需要与服务器保持一致。
 			}
+			local path = api.UrlDecode(node.ws_path)
+			local path_dat = api.split(path, "?")
+			local params = {}
+			for _, v in pairs(api.split(path_dat[2], '&')) do
+				local t = api.split(v, '=')
+				params[t[1]] = t[2]
+			end
+			local ed = tonumber(params.ed)
+			if ed then
+				v2ray_transport.path = path_dat[1]
+				v2ray_transport.max_early_data = ed
+			end
+			v2ray_transport.early_data_header_name = params.eh or "Sec-WebSocket-Protocol"
 		end
 
 		if node.transport == "httpupgrade" then
@@ -698,8 +709,10 @@ function gen_config_server(node)
 
 	local tls = {
 		enabled = true,
-		certificate_path = node.tls_certificateFile,
-		key_path = node.tls_keyFile,
+		certificate_path = (node.tls_use_pem ~= "1") and node.tls_certificateFile or nil,
+		key_path = (node.tls_use_pem ~= "1") and node.tls_keyFile or nil,
+		certificate = (node.tls_use_pem == "1" and node.tls_certificate) and api.split(node.tls_certificate:gsub("\\n", "\n"), "\n") or nil,
+		key = (node.tls_use_pem == "1" and node.tls_key) and api.split(node.tls_key:gsub("\\n", "\n"), "\n") or nil,
 		alpn = (node.alpn and node.alpn ~= "default") and (function()
 			local alpn = {}
 			string.gsub(node.alpn, '[^,]+', function(w)
@@ -713,6 +726,8 @@ function gen_config_server(node)
 	if node.tls == "1" and node.reality == "1" then
 		tls.certificate_path = nil
 		tls.key_path = nil
+		tls.certificate = nil
+		tls.key = nil
 		tls.server_name = node.reality_handshake_server
 		tls.reality = {
 			enabled = true,
@@ -730,7 +745,7 @@ function gen_config_server(node)
 	if node.tls == "1" and node.ech == "1" then
 		tls.ech = {
 			enabled = true,
-			key = node.ech_key and { node.ech_key } or nil
+			key = node.ech_key and api.split(node.ech_key:gsub("\\n", "\n"), "\n") or nil
 		}
 	end
 
@@ -762,7 +777,7 @@ function gen_config_server(node)
 			type = "ws",
 			path = node.ws_path or "/",
 			headers = (node.ws_host ~= nil) and { Host = node.ws_host } or nil,
-			early_data_header_name = (node.ws_earlyDataHeaderName) and node.ws_earlyDataHeaderName or nil --要与 Xray-core 兼容，请将其设置为 Sec-WebSocket-Protocol。它需要与服务器保持一致。
+			early_data_header_name = (node.ws_earlyDataHeaderName) and node.ws_earlyDataHeaderName or "Sec-WebSocket-Protocol"
 		}
 	end
 
