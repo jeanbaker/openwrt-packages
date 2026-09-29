@@ -31,6 +31,7 @@ local datatypes = api.datatypes
 local TMP_PATH = api.TMP_PATH
 local TMP_ACL_PATH = TMP_PATH .. "/acl"
 local RULES_PATH = "/usr/share/passwall/rules"
+local USER_RULES_PATH = "/etc/passwall/rules"
 local FLAG_PATH = TMP_ACL_PATH .. "/" .. FLAG
 local TMP_CONF_FILE = FLAG_PATH .. "/smartdns.conf"
 local config_lines = {}
@@ -288,7 +289,7 @@ local file_block_host = TMP_ACL_PATH .. "/block_host"
 if USE_BLOCK_LIST == "1" and not fs.access(file_block_host) then
 	local block_domain, lookup_block_domain = {}, {}
 	local geosite_arg = ""
-	local f = io.open(RULES_PATH .. "/block_host")
+	local f = io.open(USER_RULES_PATH .. "/block_host")
 	if f then
 		for line in f:lines() do
 			if not line:find("#") and line:find("geosite:") then
@@ -378,7 +379,7 @@ local file_direct_host = TMP_ACL_PATH .. "/direct_host"
 if USE_DIRECT_LIST == "1" and not fs.access(file_direct_host) then
 	local direct_domain, lookup_direct_domain = {}, {}
 	local geosite_arg = ""
-	local f = io.open(RULES_PATH .. "/direct_host")
+	local f = io.open(USER_RULES_PATH .. "/direct_host")
 	if f then
 		for line in f:lines() do
 			if not line:find("#") and line:find("geosite:") then
@@ -430,7 +431,7 @@ local file_proxy_host = TMP_ACL_PATH .. "/proxy_host"
 if USE_PROXY_LIST == "1" and not fs.access(file_proxy_host) then
 	local proxy_domain, lookup_proxy_domain = {}, {}
 	local geosite_arg = ""
-	local f = io.open(RULES_PATH .. "/proxy_host")
+	local f = io.open(USER_RULES_PATH .. "/proxy_host")
 	if f then
 		for line in f:lines() do
 			if not line:find("#") and line:find("geosite:") then
@@ -522,7 +523,7 @@ if CHN_LIST ~= "0" and is_file_nonzero(RULES_PATH .. "/chnlist") then
 		domain_rules_str = domain_rules_str .. (LOCAL_EXTEND_ARG ~= "" and " " .. LOCAL_EXTEND_ARG or "")
 		table.insert(tmp_lines, domain_rules_str)
 		insert_array_after(config_lines, tmp_lines, "#--2")
-		log(string.format("  - 中国域名表(chnroute)使用分组：%s", LOCAL_GROUP or "默认"))
+		log(string.format("  - 中国域名表(chnlist)使用分组：%s", LOCAL_GROUP or "默认"))
 	end
 
 	--回中国模式
@@ -541,7 +542,7 @@ if CHN_LIST ~= "0" and is_file_nonzero(RULES_PATH .. "/chnlist") then
 		end
 		table.insert(tmp_lines, domain_rules_str)
 		insert_array_after(config_lines, tmp_lines, "#--2")
-		log(string.format("  - 中国域名表(chnroute)使用分组：%s", REMOTE_GROUP or "默认"))
+		log(string.format("  - 中国域名表(chnlist)使用分组：%s", REMOTE_GROUP or "默认"))
 	end
 end
 
@@ -693,4 +694,4 @@ end
 
 fs.symlink(TMP_CONF_FILE, SMARTDNS_CONF)
 sys.call(string.format('echo "conf-file %s" >> /etc/smartdns/custom.conf', string.gsub(SMARTDNS_CONF, "passwall", "passwall*")))
-log("  - SmartDNS已作为Dnsmasq上游，如果你自行配置了错误的DNS流程，将会导致域名(直连/代理域名)分流失效！！！")
+log("  - SmartDNS已作为Dnsmasq上游，如果你自行配置了错误的DNS流程，将会导致域名(直连/代理)分流失效！！！")

@@ -26,6 +26,7 @@ local datatypes = api.datatypes
 local TMP_PATH = api.TMP_PATH
 local TMP_ACL_PATH = TMP_PATH .. "/acl"
 local RULES_PATH = "/usr/share/passwall/rules"
+local USER_RULES_PATH = "/etc/passwall/rules"
 local FLAG_PATH = TMP_ACL_PATH .. "/" .. FLAG
 local config_lines = {}
 local tmp_lines = {}
@@ -130,7 +131,7 @@ local file_block_host = TMP_ACL_PATH .. "/block_host"
 if USE_BLOCK_LIST == "1" and not fs.access(file_block_host) then
 	local block_domain, lookup_block_domain = {}, {}
 	local geosite_arg = ""
-	local f = io.open(RULES_PATH .. "/block_host")
+	local f = io.open(USER_RULES_PATH .. "/block_host")
 	if f then
 		for line in f:lines() do
 			if not line:find("#") and line:find("geosite:") then
@@ -217,7 +218,7 @@ local file_direct_host = TMP_ACL_PATH .. "/direct_host"
 if USE_DIRECT_LIST == "1" and not fs.access(file_direct_host) then
 	local direct_domain, lookup_direct_domain = {}, {}
 	local geosite_arg = ""
-	local f = io.open(RULES_PATH .. "/direct_host")
+	local f = io.open(USER_RULES_PATH .. "/direct_host")
 	if f then
 		for line in f:lines() do
 			if not line:find("#") and line:find("geosite:") then
@@ -267,7 +268,7 @@ local file_proxy_host = TMP_ACL_PATH .. "/proxy_host"
 if USE_PROXY_LIST == "1" and not fs.access(file_proxy_host) then
 	local proxy_domain, lookup_proxy_domain = {}, {}
 	local geosite_arg = ""
-	local f = io.open(RULES_PATH .. "/proxy_host")
+	local f = io.open(USER_RULES_PATH .. "/proxy_host")
 	if f then
 		for line in f:lines() do
 			if not line:find("#") and line:find("geosite:") then
@@ -356,7 +357,7 @@ if CHNLIST ~= "0" and is_file_nonzero(RULES_PATH .. "/chnlist") then
 			"add-tagchn-ip" .. ((NFTFLAG == "1") and (" " .. table.concat(sets, ",")) or "")
 		}
 		merge_array(config_lines, tmp_lines)
-		log(string.format("  - 中国域名表(chnroute)：%s", DNS_LOCAL or "默认"))
+		log(string.format("  - 中国域名表(chnlist)：%s", DNS_LOCAL or "默认"))
 	end
 
 	--回中国模式
@@ -373,7 +374,7 @@ if CHNLIST ~= "0" and is_file_nonzero(RULES_PATH .. "/chnlist") then
 		}
 		if NO_IPV6_TRUST == "1" then table.insert(tmp_lines, "no-ipv6 tag:chn_proxy") end
 		insert_array_after(config_lines, tmp_lines, "#--1")
-		log(string.format("  - 中国域名表(chnroute)：%s", DNS_TRUST or "默认"))
+		log(string.format("  - 中国域名表(chnlist)：%s", DNS_TRUST or "默认"))
 	end
 end
 
@@ -551,4 +552,4 @@ if #config_lines > 0 then
 	end
 end
 
-log("  - ChinaDNS-NG已作为Dnsmasq上游，如果你自行配置了错误的DNS流程，将会导致域名(直连/代理域名)分流失效！！！")
+log("  - ChinaDNS-NG已作为Dnsmasq上游，如果你自行配置了错误的DNS流程，将会导致域名(直连/代理)分流失效！！！")
