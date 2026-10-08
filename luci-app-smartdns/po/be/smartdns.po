@@ -1,40 +1,36 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2025-11-24 10:29+0000\n"
-"Last-Translator: CRISTIAN ANDREI <cristianvdr@gmail.com>\n"
-"Language-Team: Romanian <https://hosted.weblate.org/projects/openwrt/"
-"luciapplicationssmartdns/ro/>\n"
-"Language: ro\n"
-"MIME-Version: 1.0\n"
+"PO-Revision-Date: 2026-04-24 15:13+0000\n"
+"Last-Translator: smallcms <smallcms@gmail.com>\n"
+"Language-Team: Belarusian <https://hosted.weblate.org/projects/openwrt/"
+"luciapplicationssmartdns/be/>\n"
+"Language: be\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=n==1 ? 0 : "
-"(n==0 || (n%100 > 0 && n%100 < 20)) ? 1 : 2;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Weblate 5.17.1-dev\n"
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:791
 msgid "Additional Args for upstream dns servers"
-msgstr "Argumente adiționalie pentru serverele dns externe"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:885
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:1089
 msgid ""
 "Additional Flags for rules, read help on domain-rule for more information."
 msgstr ""
-"Semnalizări Suplimentare pentru reguli, citiți ajutorul pe regula domeniului "
-"pentru mai multe informații."
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:884
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:1088
 msgid "Additional Rule Flag"
-msgstr "Etichetă Suplimentară a Regulii"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:345
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:478
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:790
 msgid "Additional Server Args"
-msgstr "Argumente suplimentare pentru servere"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:346
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:479
@@ -45,7 +41,7 @@ msgstr ""
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:131
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:638
 msgid "Advanced Settings"
-msgstr "Setări Avansate"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:252
 msgid ""
@@ -87,7 +83,7 @@ msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:120
 msgid "Collecting data ..."
-msgstr "Colectare date ..."
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:1099
 msgid ""
@@ -158,7 +154,7 @@ msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:559
 msgid "Description"
-msgstr "Descriere"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:75
 msgid "Dnsmasq Forwarded To Smartdns Failure"
@@ -253,7 +249,7 @@ msgstr ""
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:641
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:958
 msgid "Enable"
-msgstr "Activați"
+msgstr "Уключыць"
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:494
 msgid "Enable Auto Update"
@@ -347,7 +343,7 @@ msgstr ""
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:130
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:637
 msgid "General Settings"
-msgstr "Setări Generale"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:598
 msgid "Generate Coredump"
@@ -485,7 +481,7 @@ msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:1013
 msgid "No"
-msgstr "Nu"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:281
 msgid "No Speed IPset Name"
@@ -503,7 +499,7 @@ msgstr ""
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:999
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:1024
 msgid "None"
-msgstr "Niciuna"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:783
 msgid "Only socks5 proxy support udp server."
@@ -536,7 +532,7 @@ msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:63
 msgid "RUNNING"
-msgstr "Funcţionare"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:340
 msgid "Reply Domain TTL Max"
@@ -626,7 +622,7 @@ msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:127
 msgid "Settings"
-msgstr "Setări"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:401
 msgid "Skip Address Rules"
@@ -684,7 +680,7 @@ msgstr ""
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:94
 #: applications/luci-app-smartdns/root/usr/share/luci/menu.d/luci-app-smartdns.json:3
 msgid "SmartDNS"
-msgstr "SmartDNS"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:95
 msgid "SmartDNS Server"
@@ -774,7 +770,7 @@ msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:538
 msgid "URL"
-msgstr "URL"
+msgstr ""
 
 #: applications/luci-app-smartdns/htdocs/luci-static/resources/view/smartdns/smartdns.js:547
 msgid "URL format error, format: http:// or https://"
