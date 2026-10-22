@@ -1,34 +1,86 @@
-# SPDX-License-Identifier: GPL-2.0-only
+#
+# Copyright (C) 2025 w9315273
+#
+# This is free software, licensed under the MIT License.
+#
 
 include $(TOPDIR)/rules.mk
 
-LUCI_NAME:=luci-app-adguardhome
-LUCI_MAINTAINER:=Jackie264 <OneNAS-space>
-PKG_LICENSE:=GPL-2.0-only
-PKG_CPE_ID:=cpe:/a:Jackie264:luci-app-adguardhome
+PKG_NAME:=luci-app-adguardhome
+PKG_VERSION:=2.4.1
+PKG_RELEASE:=1
 
-LUCI_TITLE:=LuCI support for AdGuard Home
-LUCI_DEPENDS:=+luci-base +adguardhome
-LUCI_PKGARCH:=all
-USERID:=adguardhome=853:adguardhome=853
+PKG_LICENSE:=MIT
+PKG_LICENSE_FILES:=LICENSE
+PKG_MAINTAINER:=w9315273
+PKG_BUILD_DEPENDS:=luci-base/host
 
-PKG_UNPACK:=$(CURDIR)/.prepare.sh $(PKG_NAME) $(CURDIR) $(PKG_BUILD_DIR)
+include $(INCLUDE_DIR)/package.mk
+
+define Package/luci-app-adguardhome
+	SECTION:=luci
+	CATEGORY:=LuCI
+	SUBMENU:=3. Applications
+	TITLE:=LuCI app for AdGuardHome
+	PKG_MAINTAINER:=https://github.com/w9315273/luci-app-adguardhome
+	PKGARCH:=all
+	DEPENDS:=+luci-base +rpcd-mod-ucode +uclient-fetch +tar
+endef
+
+define Package/luci-app-adguardhome/description
+	LuCI support for AdGuardHome (nftables-based DNS redirect).
+	This package does NOT include the AdGuardHome core binary.
+endef
+
+define Build/Prepare
+endef
+
+define Build/Compile
+endef
 
 define Package/luci-app-adguardhome/conffiles
-/etc/adguardhome/adguardhome.yaml
-/etc/config/adguardhome
+/etc/config/AdGuardHome
+endef
+
+define Package/luci-app-adguardhome/install
+	cp -pR ./root/* $(1)/
+
+	$(INSTALL_DIR) $(1)/usr/lib/lua/luci/i18n
+	po2lmo ./po/zh-cn/AdGuardHome.po \
+		$(1)/usr/lib/lua/luci/i18n/AdGuardHome.zh-cn.lmo
+endef
+
+define Package/luci-app-adguardhome/postinst
+#!/bin/sh
+[ -n "$${IPKG_INSTROOT}" ] && exit 0
+
+/etc/init.d/AdGuardHome enable >/dev/null 2>&1
+
+enable=$$(uci get AdGuardHome.AdGuardHome.enabled 2>/dev/null)
+if [ "$$enable" = "1" ]; then
+	/etc/init.d/AdGuardHome reload
+fi
+
+rm -f /tmp/luci-indexcache
+rm -f /tmp/luci-modulecache/*
+/etc/init.d/rpcd reload
+
+exit 0
 endef
 
 define Package/luci-app-adguardhome/prerm
 #!/bin/sh
-[ -n "$${IPKG_INSTROOT}" ] || { 
-    rm -f /tmp/luci-indexcache.*
-    rm -rf /tmp/luci-modulecache/
-    /etc/init.d/rpcd reload 2>/dev/null
-}
+if [ -z "$${IPKG_INSTROOT}" ]; then
+	/etc/init.d/AdGuardHome disable
+	/etc/init.d/AdGuardHome stop 2>/dev/null || true
+
+	uci -q batch <<-EOF >/dev/null 2>&1
+		delete ucitrack.@AdGuardHome[-1]
+		commit ucitrack
+EOF
+fi
+
 exit 0
 endef
 
-include $(TOPDIR)/feeds/luci/luci.mk
-
-# call BuildPackage - OpenWrt buildroot signature
+$(eval $(call BuildPackage,luci-app-adguardhome))
